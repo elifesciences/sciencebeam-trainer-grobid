@@ -16,6 +16,7 @@ RUN mkdir -p /usr/local/gcloud \
 ENV PATH /usr/local/gcloud/google-cloud-sdk/bin:$PATH
 
 ARG grobid_tag
+ENV GROBID_VERSION=${grobid_tag}
 RUN wget --output-document=/tmp/grobid.zip --quiet --show-progress --progress=bar:force:noscroll \
     https://github.com/kermitt2/grobid/archive/${grobid_tag}.zip \
     && mkdir -p /opt \
@@ -29,9 +30,6 @@ RUN mkdir -p .gradle
 VOLUME /opt/grobid-source/.gradle
 
 RUN ./gradlew clean assemble --no-daemon
-
-# move up
-ENV GROBID_VERSION=${grobid_tag}
 
 WORKDIR /opt/grobid
 

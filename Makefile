@@ -52,20 +52,20 @@ copy-raw-header-training-data-to-tei: build
 
 train-header-model-with-dataset: build
 	$(RUN) train-header-model.sh \
-    --dataset "$(DATASET_DIR)" \
+		--dataset "$(DATASET_DIR)" \
 		$(TRAIN_ARGS)
 
 
 train-header-model-with-default-dataset: build
 	$(RUN) train-header-model.sh \
-    --use-default-dataset \
+		--use-default-dataset \
 		$(TRAIN_ARGS)
 
 
 train-header-model-with-dataset-and-default-dataset: build
 	$(RUN) train-header-model.sh \
-    --dataset "$(DATASET_DIR)" \
-    --use-default-dataset \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
 		$(TRAIN_ARGS)
 
 

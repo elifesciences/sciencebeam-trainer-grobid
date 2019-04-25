@@ -19,9 +19,7 @@ services:
     depends_on:
       - grobid-builder
     volumes:
-      - gradle:/opt/grobid-source/.gradle
       - data:/data
 
 volumes:
-  gradle:
   data:

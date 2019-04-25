@@ -18,7 +18,7 @@ CLOUD_MODELS_PATH =
 
 
 build:
-	$(DOCKER_COMPOSE) build sciencebeam-trainer-grobid
+	$(DOCKER_COMPOSE) build
 
 
 example-data-processing-end-to-end: \

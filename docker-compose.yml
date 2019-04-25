@@ -1,11 +1,19 @@
 version: '3'
 
 services:
+  grobid-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
+      args:
+        grobid_tag: ${GROBID_TAG}
+    image: elifesciences/sciencebeam-trainer-grobid-builder:${GROBID_TAG}
   sciencebeam-trainer-grobid:
     build:
       context: .
       dockerfile: Dockerfile
       args:
+        builder_image: elifesciences/sciencebeam-trainer-grobid-builder:${GROBID_TAG}
         grobid_tag: ${GROBID_TAG}
     image: elifesciences/sciencebeam-trainer-grobid:${GROBID_TAG}
     volumes:

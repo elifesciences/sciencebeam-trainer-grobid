@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  sciencebeam-trainer-grobid:
+    volumes:
+      - ~/.config/gcloud:/root/.config/gcloud

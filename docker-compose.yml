@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  sciencebeam-trainer-grobid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        grobid_tag: ${GROBID_TAG}
+    image: elifesciences/sciencebeam-trainer-grobid:${GROBID_TAG}
+    volumes:
+      - gradle:/opt/grobid-source/.gradle
+      - data:/data
+
+volumes:
+  gradle:
+  data:

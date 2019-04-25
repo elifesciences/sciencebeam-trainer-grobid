@@ -3,7 +3,7 @@ FROM openjdk:8-jdk-stretch
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \
     wget unzip libxml2 rename python2.7-minimal \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 # install gcloud to make it easier to access cloud storage
 # gcloud sdk cli only works with Python 2 (in 2019)

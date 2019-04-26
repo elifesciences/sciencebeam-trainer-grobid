@@ -34,3 +34,4 @@ LABEL org.elifesciences.dependencies.grobid="${grobid_tag}"
 
 ARG revision
 LABEL org.opencontainers.image.revision="${revision}"
+LABEL org.opencontainers.image.source=https://github.com/elifesciences/sciencebeam-trainer-grobid

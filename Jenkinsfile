@@ -8,7 +8,7 @@ elifePipeline {
             checkout scm
             commit = elifeGitRevision()
             grobidTag = sh(
-                script: 'bash -c "source .env && echo \$GROBID_TAG"',
+                script: 'bash -c "source .env && echo \\$GROBID_TAG"',
                 returnStdout: true
             ).trim()
             echo "GROBID_TAG: ${grobidTag}"

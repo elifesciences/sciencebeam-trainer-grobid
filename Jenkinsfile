@@ -1,10 +1,15 @@
 elifePipeline {
     node('containers-jenkins-plugin') {
         def commit
+        def fullImageTag
 
         stage 'Checkout', {
             checkout scm
             commit = elifeGitRevision()
+            fullImageTag = sh(
+                script: "docker-compose config | grep -P -o '(?<=\simage: elifesciences/sciencebeam-trainer-grobid-builder:)\S+'"
+            ).trim()
+            echo "Full image tag: ${fullImageTag}"
         }
 
         stage 'Build and run tests', {
@@ -21,8 +26,8 @@ elifePipeline {
             }
 
             stage 'Push unstable image', {
-                def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', commit)
-                def unstable_image = image.addSuffixAndTag('_unstable', commit)
+                def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
+                def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
                 unstable_image.tag('latest').push()
                 unstable_image.push()
             }

@@ -18,9 +18,6 @@ RUN mkdir -p /usr/local/gcloud \
 
 ENV PATH /usr/local/gcloud/google-cloud-sdk/bin:$PATH
 
-ARG grobid_tag
-ENV GROBID_VERSION=${grobid_tag}
-
 WORKDIR /opt/grobid
 COPY --from=builder /opt/grobid/* ./
 COPY --from=builder /opt/grobid-source/grobid-home /opt/grobid-source/grobid-home
@@ -31,4 +28,9 @@ ENV PATH /opt/scripts:$PATH
 
 ENV JAVA_OPTS=-Xmx1G
 
+ARG grobid_tag
+ENV GROBID_VERSION=${grobid_tag}
 LABEL org.elifesciences.dependencies.grobid="${grobid_tag}"
+
+ARG image_tag
+LABEL org.opencontainers.image.revision="${image_tag}"

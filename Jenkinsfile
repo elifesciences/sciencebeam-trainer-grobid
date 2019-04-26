@@ -27,6 +27,7 @@ elifePipeline {
                 script: "docker-read-label ${image} org.elifesciences.dependencies.grobid",
                 returnStdout: true
             )
+            echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
             assert actualGrobidTag == grobidTag
         }
 

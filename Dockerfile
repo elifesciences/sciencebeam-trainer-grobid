@@ -32,5 +32,5 @@ ARG grobid_tag
 ENV GROBID_VERSION=${grobid_tag}
 LABEL org.elifesciences.dependencies.grobid="${grobid_tag}"
 
-ARG image_tag
-LABEL org.opencontainers.image.revision="${image_tag}"
+ARG revision
+LABEL org.opencontainers.image.revision="${revision}"

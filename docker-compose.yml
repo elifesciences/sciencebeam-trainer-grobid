@@ -15,7 +15,7 @@ services:
       args:
         builder_image: elifesciences/sciencebeam-trainer-grobid-builder:${IMAGE_TAG}
         grobid_tag: ${GROBID_TAG}
-        image_tag: ${IMAGE_TAG}
+        revision: ${REVISION}
     image: elifesciences/sciencebeam-trainer-grobid:${IMAGE_TAG}
     depends_on:
       - grobid-builder

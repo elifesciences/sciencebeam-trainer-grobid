@@ -19,9 +19,9 @@ elifePipeline {
 
         stage 'Build and run tests', {
             try {
-                sh "make ci-build-and-test"
+                sh "IMAGE_TAG=${fullImageTag} make ci-build-and-test"
             } finally {
-                sh "make ci-clean"
+                sh "IMAGE_TAG=${fullImageTag} make ci-clean"
             }
         }
 

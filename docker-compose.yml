@@ -7,15 +7,15 @@ services:
       dockerfile: Dockerfile.builder
       args:
         grobid_tag: ${GROBID_TAG}
-    image: elifesciences/sciencebeam-trainer-grobid-builder:${GROBID_TAG}-${IMAGE_TAG}
+    image: elifesciences/sciencebeam-trainer-grobid-builder:${IMAGE_TAG}
   sciencebeam-trainer-grobid:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        builder_image: elifesciences/sciencebeam-trainer-grobid-builder:${GROBID_TAG}-${IMAGE_TAG}
+        builder_image: elifesciences/sciencebeam-trainer-grobid-builder:${IMAGE_TAG}
         grobid_tag: ${GROBID_TAG}
-    image: elifesciences/sciencebeam-trainer-grobid:${GROBID_TAG}-${IMAGE_TAG}
+    image: elifesciences/sciencebeam-trainer-grobid:${IMAGE_TAG}
     depends_on:
       - grobid-builder
     volumes:

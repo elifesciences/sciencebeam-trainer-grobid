@@ -30,3 +30,5 @@ COPY scripts /opt/scripts
 ENV PATH /opt/scripts:$PATH
 
 ENV JAVA_OPTS=-Xmx1G
+
+LABEL org.elifesciences.dependencies.grobid="${grobid_tag}"

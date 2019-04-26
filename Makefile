@@ -40,7 +40,7 @@ get-example-data: build
 generate-grobid-training-data: build
 	$(RUN) generate-grobid-training-data.sh \
 		"${PDF_DATA_DIR}" \
-    "$(DATASET_DIR)"
+		"$(DATASET_DIR)"
 
 
 copy-raw-header-training-data-to-tei: build

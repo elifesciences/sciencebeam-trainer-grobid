@@ -9,10 +9,7 @@ elifePipeline {
             commit = elifeGitRevision()
             grobidTag = sh(script: 'bash -c "source .env && echo $GROBID_TAG"', returnStdout: true)
             echo "GROBID_TAG: ${grobidTag}"
-            fullImageTag = sh(
-                script: "docker-compose config | grep -P -o '(?<=\\simage: elifesciences/sciencebeam-trainer-grobid-builder:)\\S+'",
-                returnStdout: true
-            ).trim()
+            fullImageTag = "${grobidTag}-${commit}"
             echo "Full image tag: ${fullImageTag}"
         }
 

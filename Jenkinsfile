@@ -21,6 +21,15 @@ elifePipeline {
             }
         }
 
+        stage 'Check GROBID label', {
+            def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
+            def actualGrobidTag = sh(
+                script: "docker-read-label ${image} org.elifesciences.dependencies.grobid",
+                returnStdout: true
+            )
+            assert actualGrobidTag == grobidTag
+        }
+
         elifeMainlineOnly {
             stage 'Merge to master', {
                 elifeGitMoveToBranch commit, 'master'

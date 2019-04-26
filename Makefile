@@ -78,7 +78,7 @@ shell: build
 
 
 ci-build-and-test:
-	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" example-data-processing-end-to-end
 
 
 ci-clean:

@@ -7,7 +7,8 @@ elifePipeline {
             checkout scm
             commit = elifeGitRevision()
             fullImageTag = sh(
-                script: "docker-compose config | grep -P -o '(?<=\\simage: elifesciences/sciencebeam-trainer-grobid-builder:)\\S+'"
+                script: "docker-compose config | grep -P -o '(?<=\\simage: elifesciences/sciencebeam-trainer-grobid-builder:)\\S+'",
+                returnStdout: true
             ).trim()
             echo "Full image tag: ${fullImageTag}"
         }

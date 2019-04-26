@@ -43,7 +43,7 @@ elifePipeline {
             stage 'Push unstable image', {
                 def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
                 def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
-                unstable_image.tag("${grobidTag}-latest").push()
+                unstable_image.tag("${grobidTag}").push()
                 unstable_image.push()
             }
         }

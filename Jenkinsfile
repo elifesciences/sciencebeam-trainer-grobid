@@ -7,7 +7,10 @@ elifePipeline {
         stage 'Checkout', {
             checkout scm
             commit = elifeGitRevision()
-            grobidTag = sh(script: 'bash -c "source .env && echo $GROBID_TAG"', returnStdout: true)
+            grobidTag = sh(
+                script: 'bash -c "source .env && echo $GROBID_TAG"',
+                returnStdout: true
+            ).trim()
             echo "GROBID_TAG: ${grobidTag}"
             fullImageTag = "${grobidTag}-${commit}"
             echo "Full image tag: ${fullImageTag}"
@@ -26,7 +29,7 @@ elifePipeline {
             def actualGrobidTag = sh(
                 script: "docker-read-label ${image} org.elifesciences.dependencies.grobid",
                 returnStdout: true
-            )
+            ).trim()
             echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
             assert actualGrobidTag == grobidTag
         }

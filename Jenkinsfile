@@ -28,7 +28,7 @@ elifePipeline {
         stage 'Check GROBID label', {
             echo "Checking GROBID label..."
             def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
-            echo "Reading GROBID label of image '${image}'..."
+            echo "Reading GROBID label of image: ${image}"
             def actualGrobidTag = sh(
                 script: "./ci/docker-read-local-label.sh ${image} org.elifesciences.dependencies.grobid",
                 returnStdout: true

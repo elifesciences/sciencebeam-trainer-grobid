@@ -7,7 +7,7 @@ elifePipeline {
         stage 'Checkout', {
             checkout scm
             commit = elifeGitRevision()
-            grobidTag = sh(script: 'source .env && echo $GROBID_TAG', returnStdout: true)
+            grobidTag = sh(script: 'bash -c "source .env && echo $GROBID_TAG"', returnStdout: true)
             echo "GROBID_TAG: ${grobidTag}"
             fullImageTag = sh(
                 script: "docker-compose config | grep -P -o '(?<=\\simage: elifesciences/sciencebeam-trainer-grobid-builder:)\\S+'",

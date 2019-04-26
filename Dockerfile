@@ -29,4 +29,4 @@ COPY --from=builder /opt/grobid-source/grobid-trainer/resources /opt/grobid-sour
 COPY scripts /opt/scripts
 ENV PATH /opt/scripts:$PATH
 
-ENV JAVA_OPTS -Xmx1G
+ENV JAVA_OPTS=-Xmx1G

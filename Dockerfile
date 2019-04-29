@@ -18,9 +18,6 @@ RUN mkdir -p /usr/local/gcloud \
 
 ENV PATH /usr/local/gcloud/google-cloud-sdk/bin:$PATH
 
-ARG grobid_tag
-ENV GROBID_VERSION=${grobid_tag}
-
 WORKDIR /opt/grobid
 COPY --from=builder /opt/grobid/* ./
 COPY --from=builder /opt/grobid-source/grobid-home /opt/grobid-source/grobid-home
@@ -29,4 +26,12 @@ COPY --from=builder /opt/grobid-source/grobid-trainer/resources /opt/grobid-sour
 COPY scripts /opt/scripts
 ENV PATH /opt/scripts:$PATH
 
-ENV JAVA_OPTS -Xmx1G
+ENV JAVA_OPTS=-Xmx1G
+
+ARG grobid_tag
+ENV GROBID_VERSION=${grobid_tag}
+LABEL org.elifesciences.dependencies.grobid="${grobid_tag}"
+
+ARG revision
+LABEL org.opencontainers.image.revision="${revision}"
+LABEL org.opencontainers.image.source=https://github.com/elifesciences/sciencebeam-trainer-grobid

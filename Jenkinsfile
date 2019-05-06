@@ -25,7 +25,7 @@ elifePipeline {
                 parallel(allGrobidTags.inject([:]) { m, _grobidTag ->
                     m["Build and run tests (${_grobidTag})"] = {
                         def _fullImageTag = "${grobidTag}-${commit}"
-                        sh "IMAGE_TAG=${_fullImageTag} REVISION=${commit} make ci-build-and-test"
+                        sh "GROBID_TAG=${_grobidTag} IMAGE_TAG=${_fullImageTag} REVISION=${commit} make ci-build-and-test"
 
                         echo "Checking GROBID label..."
                         def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', _fullImageTag)

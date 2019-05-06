@@ -2,8 +2,6 @@ elifePipeline {
     node('containers-jenkins-plugin') {
         def commit
         def allGrobidTags
-        def grobidTag
-        def fullImageTag
 
         stage 'Checkout', {
             checkout scm
@@ -14,28 +12,24 @@ elifePipeline {
             ).trim().split(':')
             echo "allGrobidTags: ${allGrobidTags}"
             assert allGrobidTags != []
-            grobidTag = allGrobidTags[0]
-            assert allGrobidTags != ''
-            fullImageTag = "${grobidTag}-${commit}"
-            echo "Full image tag: ${fullImageTag}"
         }
 
-        stage 'Build and run tests all grobid versions', {
+        stage 'Build and run tests', {
             try {
-                parallel(allGrobidTags.inject([:]) { m, _grobidTag ->
-                    m["Build and run tests (${_grobidTag})"] = {
-                        def _fullImageTag = "${grobidTag}-${commit}"
-                        sh "GROBID_TAG=${_grobidTag} IMAGE_TAG=${_fullImageTag} REVISION=${commit} make ci-build-and-test"
+                parallel(allGrobidTags.inject([:]) { m, grobidTag ->
+                    m["Build and run tests (${grobidTag})"] = {
+                        def fullImageTag = "${grobidTag}-${commit}"
+                        sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
 
                         echo "Checking GROBID label..."
-                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', _fullImageTag)
+                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
                         echo "Reading GROBID label of image: ${image.toString()}"
                         def actualGrobidTag = sh(
                             script: "./ci/docker-read-local-label.sh ${image.toString()} org.elifesciences.dependencies.grobid",
                             returnStdout: true
                         ).trim()
-                        echo "GROBID label: ${actualGrobidTag} (expected: ${_grobidTag})"
-                        assert actualGrobidTag == _grobidTag
+                        echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
+                        assert actualGrobidTag == grobidTag
                     }
                     return m
                 })
@@ -50,10 +44,16 @@ elifePipeline {
             }
 
             stage 'Push unstable image', {
-                def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
-                def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
-                unstable_image.tag(grobidTag).push()
-                unstable_image.push()
+                parallel(allGrobidTags.inject([:]) { m, grobidTag ->
+                    m["Push unstable image (${grobidTag})"] = {
+                        def fullImageTag = "${grobidTag}-${commit}"
+                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
+                        def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
+                        unstable_image.tag(grobidTag).push()
+                        unstable_image.push()
+                    }
+                    return m
+                })
             }
         }
     }

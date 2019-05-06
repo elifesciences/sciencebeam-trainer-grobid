@@ -1,6 +1,7 @@
 elifePipeline {
     node('containers-jenkins-plugin') {
         def commit
+        def allGrobidTags
         def grobidTag
         def fullImageTag
 
@@ -19,12 +20,16 @@ elifePipeline {
             echo "Full image tag: ${fullImageTag}"
         }
 
-        stage 'Build and run tests', {
-            try {
-                sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
-            } finally {
-                sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-clean"
-            }
+        stage 'Build and run tests all grobid versions', {
+            parallel(allGrobidTags.collect { grobidTag ->
+                stage "Build and run tests (${grobidTag})", {
+                    try {
+                        sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
+                    } finally {
+                        sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-clean"
+                    }
+                }
+            })
         }
 
         stage 'Check GROBID label', {

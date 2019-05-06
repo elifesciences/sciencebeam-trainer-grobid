@@ -10,6 +10,50 @@ The Trainer for GROBID is a thin wrapper and Docker container around [GROBID Tra
 
 * [Google Gloud SDK](https://cloud.google.com/sdk/docs/) for [gcloud](https://cloud.google.com/sdk/gcloud/)
 
+## Using the Docker Container
+
+### Header Model Training with Default Dataset
+
+This isn't very useful unless you want to re-train the model. It is a good test to see how long training takes though.
+
+Using Docker:
+
+```bash
+docker run --rm -it \
+    elifesciences/sciencebeam-trainer-grobid_unstable:0.5.4 \
+    train-header-model.sh \
+        --use-default-dataset
+```
+
+Using Kubernetes:
+
+```bash
+kubectl run --rm --attach --restart=Never --generator=run-pod/v1 \
+    --image=elifesciences/sciencebeam-trainer-grobid_unstable:0.5.4 \
+    train-header-model -- \
+    train-header-model.sh \
+        --use-default-dataset
+```
+
+### Header Model Training with your own dataset
+
+Using a mounted volume:
+
+```bash
+docker run --rm -it \
+    -v /data/mydataset:/data/mydataset \
+    elifesciences/sciencebeam-trainer-grobid_unstable:0.5.4 \
+    train-header-model.sh \
+        --dataset /data/mydataset \
+        --use-default-dataset
+```
+
+You could also specify a cloud location that `gsutil` understands (assuming that the credentials are mounted too).
+
+The `--use-default-dataset` flag is optional.
+
+You may also add `--cloud-models-path <cloud path>` to copy the resulting model to a cloud storage.
+
 ## Make Targets
 
 ### Example End-to-End

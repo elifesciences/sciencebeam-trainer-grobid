@@ -24,25 +24,24 @@ elifePipeline {
             try {
                 parallel(allGrobidTags.inject([:]) { m, _grobidTag ->
                     m["Build and run tests (${_grobidTag})"] = {
-                        sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
+                        def _fullImageTag = "${grobidTag}-${commit}"
+                        sh "IMAGE_TAG=${_fullImageTag} REVISION=${commit} make ci-build-and-test"
+
+                        echo "Checking GROBID label..."
+                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', _fullImageTag)
+                        echo "Reading GROBID label of image: ${image.toString()}"
+                        def actualGrobidTag = sh(
+                            script: "./ci/docker-read-local-label.sh ${image.toString()} org.elifesciences.dependencies.grobid",
+                            returnStdout: true
+                        ).trim()
+                        echo "GROBID label: ${actualGrobidTag} (expected: ${_grobidTag})"
+                        assert actualGrobidTag == _grobidTag
                     }
                     return m
                 })
             } finally {
                 sh "make ci-clean"
             }
-        }
-
-        stage 'Check GROBID label', {
-            echo "Checking GROBID label..."
-            def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
-            echo "Reading GROBID label of image: ${image.toString()}"
-            def actualGrobidTag = sh(
-                script: "./ci/docker-read-local-label.sh ${image.toString()} org.elifesciences.dependencies.grobid",
-                returnStdout: true
-            ).trim()
-            echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
-            assert actualGrobidTag == grobidTag
         }
 
         elifeMainlineOnly {

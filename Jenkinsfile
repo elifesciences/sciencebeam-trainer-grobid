@@ -21,8 +21,8 @@ elifePipeline {
         }
 
         stage 'Build and run tests all grobid versions', {
-            parallel(allGrobidTags.collect { grobidTag ->
-                stage "Build and run tests (${grobidTag})", {
+            parallel(allGrobidTags.collect { _grobidTag ->
+                stage "Build and run tests (${_grobidTag})", {
                     try {
                         sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
                     } finally {

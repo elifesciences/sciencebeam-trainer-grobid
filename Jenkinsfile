@@ -7,12 +7,14 @@ elifePipeline {
         stage 'Checkout', {
             checkout scm
             commit = elifeGitRevision()
-            grobidTag = sh(
-                script: 'bash -c "source .env && echo \\$GROBID_TAG"',
+            allGrobidTags = sh(
+                script: 'bash -c "source .env && echo \\$ALL_GROBID_TAGS"',
                 returnStdout: true
-            ).trim()
-            echo "GROBID_TAG: ${grobidTag}"
-            assert grobidTag != ''
+            ).trim().split(':')
+            echo "allGrobidTags: ${allGrobidTags}"
+            assert allGrobidTags != []
+            grobidTag = allGrobidTags[0]
+            assert allGrobidTags != ''
             fullImageTag = "${grobidTag}-${commit}"
             echo "Full image tag: ${fullImageTag}"
         }

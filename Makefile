@@ -16,9 +16,12 @@ SAMPLE_PDF_URL = https://cdn.elifesciences.org/articles/32671/elife-32671-v2.pdf
 # Specify the location where to copy the model to
 CLOUD_MODELS_PATH =
 
+NO_BUILD =
 
 build:
-	$(DOCKER_COMPOSE) build
+	if [ "$(NO_BUILD)" != "y" ]; then \
+		$(DOCKER_COMPOSE) build; \
+	fi
 
 
 example-data-processing-end-to-end: \
@@ -77,8 +80,16 @@ shell: build
 	$(RUN) bash
 
 
-ci-build-and-test:
-	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" example-data-processing-end-to-end
+
+ci-build:
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
+
+
+ci-test-only:
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" NO_BUILD=y example-data-processing-end-to-end
+
+
+ci-build-and-test: ci-build ci-test-only
 
 
 ci-clean:

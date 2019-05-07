@@ -1,40 +1,51 @@
 elifePipeline {
     node('containers-jenkins-plugin') {
         def commit
-        def grobidTag
-        def fullImageTag
+        def allGrobidTags
 
         stage 'Checkout', {
             checkout scm
             commit = elifeGitRevision()
-            grobidTag = sh(
-                script: 'bash -c "source .env && echo \\$GROBID_TAG"',
+            allGrobidTags = sh(
+                script: 'bash -c "source .env && echo \\$ALL_GROBID_TAGS"',
                 returnStdout: true
-            ).trim()
-            echo "GROBID_TAG: ${grobidTag}"
-            assert grobidTag != ''
-            fullImageTag = "${grobidTag}-${commit}"
-            echo "Full image tag: ${fullImageTag}"
+            ).trim().split(',')
+            echo "allGrobidTags: ${allGrobidTags}"
+            assert allGrobidTags != []
         }
 
-        stage 'Build and run tests', {
+        stage 'Build', {
             try {
-                sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
+                parallel(allGrobidTags.inject([:]) { m, grobidTag ->
+                    m["Build (${grobidTag})"] = {
+                        def fullImageTag = "${grobidTag}-${commit}"
+                        sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build"
+
+                        echo "Checking GROBID label..."
+                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
+                        echo "Reading GROBID label of image: ${image.toString()}"
+                        def actualGrobidTag = sh(
+                            script: "./ci/docker-read-local-label.sh ${image.toString()} org.elifesciences.dependencies.grobid",
+                            returnStdout: true
+                        ).trim()
+                        echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
+                        assert actualGrobidTag == grobidTag
+                    }
+                    return m
+                })
             } finally {
-                sh "IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-clean"
+                sh "make ci-clean"
             }
         }
 
-        stage 'Check GROBID label', {
-            echo "Checking GROBID label..."
-            def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
-            echo "Reading GROBID label of image: ${image.toString()}"
-            def actualGrobidTag = sh(
-                script: "./ci/docker-read-local-label.sh ${image.toString()} org.elifesciences.dependencies.grobid",
-                returnStdout: true
-            ).trim()
-            echo "GROBID label: ${actualGrobidTag} (expected: ${grobidTag})"
-            assert actualGrobidTag == grobidTag
+        stage 'Project Tests', {
+            try {
+                def grobidTag = allGrobidTags.last()
+                def fullImageTag = "${grobidTag}-${commit}"
+                sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-test-only"
+            } finally {
+                sh "make ci-clean"
+            }
         }
 
         elifeMainlineOnly {
@@ -43,10 +54,16 @@ elifePipeline {
             }
 
             stage 'Push unstable image', {
-                def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
-                def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
-                unstable_image.tag(grobidTag).push()
-                unstable_image.push()
+                parallel(allGrobidTags.inject([:]) { m, grobidTag ->
+                    m["Push unstable image (${grobidTag})"] = {
+                        def fullImageTag = "${grobidTag}-${commit}"
+                        def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
+                        def unstable_image = image.addSuffixAndTag('_unstable', fullImageTag)
+                        unstable_image.tag(grobidTag).push()
+                        unstable_image.push()
+                    }
+                    return m
+                })
             }
         }
     }

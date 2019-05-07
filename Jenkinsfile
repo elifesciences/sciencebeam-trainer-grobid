@@ -9,7 +9,7 @@ elifePipeline {
             allGrobidTags = sh(
                 script: 'bash -c "source .env && echo \\$ALL_GROBID_TAGS"',
                 returnStdout: true
-            ).trim().split(':')
+            ).trim().split(',')
             echo "allGrobidTags: ${allGrobidTags}"
             assert allGrobidTags != []
         }

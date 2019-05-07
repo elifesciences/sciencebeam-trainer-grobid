@@ -14,12 +14,12 @@ elifePipeline {
             assert allGrobidTags != []
         }
 
-        stage 'Build and run tests', {
+        stage 'Build', {
             try {
                 parallel(allGrobidTags.inject([:]) { m, grobidTag ->
                     m["Build and run tests (${grobidTag})"] = {
                         def fullImageTag = "${grobidTag}-${commit}"
-                        sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build-and-test"
+                        sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build"
 
                         echo "Checking GROBID label..."
                         def image = DockerImage.elifesciences(this, 'sciencebeam-trainer-grobid', fullImageTag)
@@ -33,6 +33,16 @@ elifePipeline {
                     }
                     return m
                 })
+            } finally {
+                sh "make ci-clean"
+            }
+        }
+
+        stage 'Project Tests', {
+            try {
+                def grobidTag = allGrobidTags.last()
+                def fullImageTag = "${grobidTag}-${commit}"
+                sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-test-only"
             } finally {
                 sh "make ci-clean"
             }

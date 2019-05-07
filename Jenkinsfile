@@ -17,7 +17,7 @@ elifePipeline {
         stage 'Build', {
             try {
                 parallel(allGrobidTags.inject([:]) { m, grobidTag ->
-                    m["Build and run tests (${grobidTag})"] = {
+                    m["Build (${grobidTag})"] = {
                         def fullImageTag = "${grobidTag}-${commit}"
                         sh "GROBID_TAG=${grobidTag} IMAGE_TAG=${fullImageTag} REVISION=${commit} make ci-build"
 

@@ -20,7 +20,7 @@ NO_BUILD =
 
 build:
 	if [ "$(NO_BUILD)" != "y" ]; then \
-		$(DOCKER_COMPOSE) build; \
+		$(DOCKER_COMPOSE) build --parallel; \
 	fi
 
 

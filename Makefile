@@ -19,8 +19,14 @@ CLOUD_MODELS_PATH =
 NO_BUILD =
 
 build:
-	if [ "$(NO_BUILD)" != "y" ]; then \
+	@if [ "$(NO_BUILD)" != "y" ]; then \
 		$(DOCKER_COMPOSE) build; \
+	fi
+
+
+grobid-builder-build:
+	@if [ "$(NO_BUILD)" != "y" ]; then \
+		$(DOCKER_COMPOSE) build grobid-builder; \
 	fi
 
 
@@ -78,6 +84,10 @@ upload-header-model: build
 
 shell: build
 	$(RUN) bash
+
+
+grobid-builder-shell: grobid-builder-build
+	$(DOCKER_COMPOSE) run --rm grobid-builder bash
 
 
 

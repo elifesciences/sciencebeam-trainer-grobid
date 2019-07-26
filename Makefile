@@ -18,6 +18,7 @@ CLOUD_MODELS_PATH =
 
 NO_BUILD =
 
+
 build:
 	@if [ "$(NO_BUILD)" != "y" ]; then \
 		$(DOCKER_COMPOSE) build; \

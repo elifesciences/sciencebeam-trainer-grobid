@@ -13,7 +13,7 @@ WORKDIR /opt/grobid-source
 RUN mkdir -p .gradle
 VOLUME /opt/grobid-source/.gradle
 
-RUN ./gradlew clean assemble --no-daemon
+RUN ./gradlew -Pversion=${grobid_tag} clean assemble --no-daemon
 
 WORKDIR /opt/grobid
 

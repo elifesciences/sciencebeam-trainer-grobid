@@ -98,7 +98,7 @@ train-segmentation-model-with-dataset: build
 
 
 train-segmentation-model-with-default-dataset: build
-	$(RUN) train-segmentation-model.sh \
+	$(RUN) train-model.sh \
 		--use-default-dataset \
 		--model segmentation \
 		$(TRAIN_ARGS)

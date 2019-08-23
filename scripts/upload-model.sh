@@ -15,9 +15,18 @@ if [ -z "${MODEL_NAME}" ]; then
     exit 1
 fi
 
+GROBID_HOME="/opt/grobid/grobid-home"
+if [ ! -d "${GROBID_HOME}" ]; then
+    GROBID_HOME="/data/grobid-home"
+fi
+
+if [ ! -d "${GROBID_HOME}" ]; then
+    echo "no grobid home found (have you trained a model yet?)"
+fi
+
 echo "uploading ${MODEL_NAME} model to ${CLOUD_MODELS_PATH}"
 
-gsutil cp -Z "/opt/grobid/grobid-home/models/${MODEL_NAME}/model.wapiti" \
+gsutil cp -Z "${GROBID_HOME}/models/${MODEL_NAME}/model.wapiti" \
     "${CLOUD_MODELS_PATH}/${MODEL_NAME}/model.wapiti.gz"
 
 gsutil ls -l "${CLOUD_MODELS_PATH}/${MODEL_NAME}"

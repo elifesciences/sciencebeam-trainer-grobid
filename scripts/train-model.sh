@@ -91,7 +91,8 @@ ls -l --recursive "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
 
 if [ ! -d "/opt/grobid/grobid-home" ]; then
     echo "directory /opt/grobid/grobid-home not found, copying from source..."
-    cp -ar "/opt/grobid-source/grobid-home" "/opt/grobid/grobid-home"
+    cp -ar "/opt/grobid-source/grobid-home" "/data/grobid-home"
+    ln -s "/data/grobid-home" "/opt/grobid/grobid-home"
 fi
 
 java ${JAVA_OPTS} -jar grobid-trainer-onejar.jar \

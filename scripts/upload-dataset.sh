@@ -37,6 +37,10 @@ echo "CLOUD_DATATSET_PATH=${CLOUD_DATATSET_PATH}"
 
 
 sub_dirs=(
+    "segmentation/corpus/raw"
+    "segmentation/corpus/tei"
+    "segmentation/corpus/tei-raw"
+    "segmentation/corpus/tei-auto"
     "header/corpus/headers"
     "header/corpus/tei"
     "header/corpus/tei-raw"

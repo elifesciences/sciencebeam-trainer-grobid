@@ -20,22 +20,45 @@ fi
 echo "RAW_TRAINING_DATA_DIR=${RAW_TRAINING_DATA_DIR}"
 echo "DATASET_DIR=${DATASET_DIR}"
 
-header_headers_dir="$DATASET_DIR/header/corpus/headers"
-header_tei_dir="$DATASET_DIR/header/corpus/tei-raw"
+mkdir_clean() {
+    for dir in "$@"; do 
+        echo "creating or cleaning directory: ${dir}"
+        mkdir -p "${dir}"
+        rm "${dir}"/* || true
+    done
+}
 
-mkdir -p "$header_headers_dir"
-mkdir -p "$header_tei_dir"
+copy_segmentation_files() {
+    segmentation_raw_dir="$DATASET_DIR/segmentation/corpus/raw"
+    segmentation_tei_dir="$DATASET_DIR/segmentation/corpus/tei-raw"
+    mkdir_clean "$segmentation_raw_dir" "${segmentation_tei_dir}"
 
-rm "${header_headers_dir}"/* || true
-rm "${header_tei_dir}"/* || true
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $segmentation_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.segmentation "$segmentation_raw_dir"
+    echo "renaming files $segmentation_raw_dir"
+    rename 's#\.training\.#\.#' "$segmentation_raw_dir"/*
 
-echo "copying files from $RAW_TRAINING_DATA_DIR to $header_headers_dir"
-cp -a "$RAW_TRAINING_DATA_DIR/"*.header "$header_headers_dir"
-echo "renaming files $header_headers_dir"
-rename 's#\.training\.#\.#' "$header_headers_dir"/*
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $segmentation_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.segmentation.tei.xml "$segmentation_tei_dir"
+    rename 's#\.training\.#\.#' "$segmentation_tei_dir"/*
+}
 
-echo "copying files from $RAW_TRAINING_DATA_DIR to $header_tei_dir"
-cp -a "$RAW_TRAINING_DATA_DIR/"*.header.tei.xml "$header_tei_dir"
-rename 's#\.training\.#\.#' "$header_tei_dir"/*
+copy_header_files() {
+    header_headers_dir="$DATASET_DIR/header/corpus/headers"
+    header_tei_dir="$DATASET_DIR/header/corpus/tei-raw"
+    mkdir_clean "$header_headers_dir" "${header_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $header_headers_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header "$header_headers_dir"
+    echo "renaming files $header_headers_dir"
+    rename 's#\.training\.#\.#' "$header_headers_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $header_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header.tei.xml "$header_tei_dir"
+    rename 's#\.training\.#\.#' "$header_tei_dir"/*
+}
+
+copy_segmentation_files
+copy_header_files
 
 ls -l --recursive "${DATASET_DIR}"

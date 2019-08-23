@@ -83,6 +83,39 @@ upload-header-model: build
 	$(RUN) upload-header-model.sh "$(CLOUD_MODELS_PATH)"
 
 
+copy-raw-segmentation-training-data-to-tei: build
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/segmentation/corpus/tei" && \
+		cp "$(DATASET_DIR)/segmentation/corpus/tei-raw/"*.xml "$(DATASET_DIR)/segmentation/corpus/tei/" \
+		'
+
+
+train-segmentation-model-with-dataset: build
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model segmentation \
+		$(TRAIN_ARGS)
+
+
+train-segmentation-model-with-default-dataset: build
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model segmentation \
+		$(TRAIN_ARGS)
+
+
+train-segmentation-model-with-dataset-and-default-dataset: build
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model segmentation \
+		$(TRAIN_ARGS)
+
+
+upload-segmentation-model: build
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "segmentation"
+
+
 shell: build
 	$(RUN) bash
 

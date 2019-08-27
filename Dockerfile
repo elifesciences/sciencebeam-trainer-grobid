@@ -26,6 +26,10 @@ COPY --from=builder /opt/grobid-source/grobid-trainer/resources /opt/grobid-sour
 COPY scripts /opt/scripts
 ENV PATH /opt/scripts:$PATH
 
+RUN mkdir -p /data \
+  chmod a+rw /data
+VOLUME ["/data"]
+
 ENV JAVA_OPTS=-Xmx1G
 
 ARG grobid_tag

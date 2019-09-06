@@ -8,6 +8,8 @@ services:
       args:
         grobid_tag: ${GROBID_TAG}
     image: elifesciences/sciencebeam-trainer-grobid-builder:${IMAGE_TAG}
+
+  # the main sciencebeam-trainer-grobid image that we are going to push
   sciencebeam-trainer-grobid:
     build:
       context: .
@@ -19,6 +21,33 @@ services:
     image: elifesciences/sciencebeam-trainer-grobid:${IMAGE_TAG}
     depends_on:
       - grobid-builder
+    volumes:
+      - data:/data
+
+  # same as sciencebeam-trainer-grobid but with dev dependencies
+  sciencebeam-trainer-grobid-dev-base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        builder_image: elifesciences/sciencebeam-trainer-grobid-builder:${IMAGE_TAG}
+        grobid_tag: ${GROBID_TAG}
+        revision: ${REVISION}
+        install_dev: y
+    image: elifesciences/sciencebeam-trainer-grobid-dev-base:${IMAGE_TAG}
+    depends_on:
+      - grobid-builder
+
+  # with added dev tools and tests
+  sciencebeam-trainer-grobid-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        base_image: elifesciences/sciencebeam-trainer-grobid-dev-base:${IMAGE_TAG}
+    image: elifesciences/sciencebeam-trainer-grobid-dev:${IMAGE_TAG}
+    depends_on:
+      - sciencebeam-trainer-grobid-dev-base
     volumes:
       - data:/data
 

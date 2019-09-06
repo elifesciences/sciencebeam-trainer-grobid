@@ -37,6 +37,10 @@ ENV VIRTUAL_ENV=${VENV} PYTHONUSERBASE=${VENV} PATH=${VENV}/bin:$PATH
 COPY requirements.txt ${PROJECT_FOLDER}/
 RUN pip install -r ${PROJECT_FOLDER}/requirements.txt
 
+ARG install_dev
+COPY requirements.dev.txt ./
+RUN if [ "${install_dev}" = "y" ]; then pip install -r requirements.dev.txt; fi
+
 # add sciencebeam_trainer_grobid package itself
 COPY sciencebeam_trainer_grobid ${PROJECT_FOLDER}/sciencebeam_trainer_grobid
 

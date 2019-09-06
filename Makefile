@@ -12,6 +12,8 @@ RUN = $(DOCKER_COMPOSE) run --rm \
 	-e OVERRIDE_MODELS="$(OVERRIDE_MODELS)" \
 	 sciencebeam-trainer-grobid
 
+DEV_RUN = $(DOCKER_COMPOSE) run --rm sciencebeam-trainer-grobid-dev
+
 PDF_DATA_DIR = /data/pdf
 DATASET_DIR = /data/dataset
 XML_DATA_DIR = $(DATASET_DIR)/xml
@@ -25,6 +27,10 @@ SAMPLE_PDF_URL = https://cdn.elifesciences.org/articles/32671/elife-32671-v2.pdf
 CLOUD_MODELS_PATH =
 
 NO_BUILD =
+
+NOT_SLOW_PYTEST_ARGS = -m 'not slow'
+
+ARGS =
 
 
 venv-clean:
@@ -76,6 +82,13 @@ build:
 	@if [ "$(NO_BUILD)" != "y" ]; then \
 		$(DOCKER_COMPOSE) build; \
 	fi
+
+
+build-dev:
+	$(DOCKER_COMPOSE) build \
+		grobid-builder \
+		sciencebeam-trainer-grobid-dev-base \
+		sciencebeam-trainer-grobid-dev
 
 
 grobid-builder-build:
@@ -177,13 +190,52 @@ grobid-builder-shell: grobid-builder-build
 	$(DOCKER_COMPOSE) run --rm grobid-builder bash
 
 
+shell-dev:
+	$(DEV_RUN) bash
+
+
+pylint:
+	$(DEV_RUN) pylint sciencebeam_trainer_grobid tests setup.py
+
+
+flake8:
+	$(DEV_RUN) flake8 sciencebeam_trainer_grobid tests setup.py
+
+
+pytest:
+	$(DEV_RUN) pytest -p no:cacheprovider $(ARGS)
+
+
+pytest-not-slow:
+	@$(MAKE) ARGS="$(ARGS) $(NOT_SLOW_PYTEST_ARGS)" pytest
+
+
+.watch:
+	$(DEV_RUN) pytest-watch -- -p no:cacheprovider -p no:warnings $(ARGS)
+
+
+watch-slow:
+	@$(MAKE) .watch
+
+
+watch:
+	@$(MAKE) ARGS="$(ARGS) $(NOT_SLOW_PYTEST_ARGS)" .watch
+
+
+lint: flake8 pylint
+
+
+test: lint pytest
+
 
 ci-build:
-	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build build-dev
 
 
 ci-test-only:
-	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" NO_BUILD=y example-data-processing-end-to-end
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" NO_BUILD=y \
+		test \
+		example-data-processing-end-to-end
 
 
 ci-build-and-test: ci-build ci-test-only

@@ -9,9 +9,9 @@ from typing import List
 
 from six import string_types, text_type
 
-import sciencebeam_trainer_grobid.utils.configure_warnings  # pylint: disable=unused-import
+import sciencebeam_trainer_grobid.utils.configure_warnings  # noqa pylint: disable=unused-import
 
-  # pylint: disable=wrong-import-order
+# pylint: disable=wrong-import-order
 from apache_beam.io.filesystem import CompressionTypes
 from apache_beam.io.filesystems import FileSystems
 

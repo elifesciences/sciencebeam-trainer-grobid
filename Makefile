@@ -8,11 +8,11 @@ PYTHON = $(VENV)/bin/python
 
 OVERRIDE_MODELS =
 
-RUN = $(DOCKER_COMPOSE) run --rm \
+RUN = $(DOCKER_COMPOSE) run --rm --no-deps \
 	-e OVERRIDE_MODELS="$(OVERRIDE_MODELS)" \
 	 sciencebeam-trainer-grobid
 
-DEV_RUN = $(DOCKER_COMPOSE) run --rm sciencebeam-trainer-grobid-dev
+DEV_RUN = $(DOCKER_COMPOSE) run --rm --no-deps sciencebeam-trainer-grobid-dev
 
 PDF_DATA_DIR = /data/pdf
 DATASET_DIR = /data/dataset

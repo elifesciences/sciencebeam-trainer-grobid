@@ -6,7 +6,11 @@ VENV = venv
 PIP = $(VENV)/bin/pip
 PYTHON = $(VENV)/bin/python
 
-RUN = $(DOCKER_COMPOSE) run --rm sciencebeam-trainer-grobid
+OVERRIDE_MODELS =
+
+RUN = $(DOCKER_COMPOSE) run --rm \
+	-e OVERRIDE_MODELS="$(OVERRIDE_MODELS)" \
+	 sciencebeam-trainer-grobid
 
 PDF_DATA_DIR = /data/pdf
 DATASET_DIR = /data/dataset

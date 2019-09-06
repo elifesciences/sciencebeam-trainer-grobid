@@ -22,7 +22,7 @@ setup(
     install_requires=REQUIRED_PACKAGES,
     packages=packages,
     include_package_data=True,
-    description='ScienceBeam TOBID',
+    description='ScienceBeam Trainer for GROBID',
     long_description=long_description,
     long_description_content_type='text/markdown'
 )

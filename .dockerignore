@@ -1,0 +1,13 @@
+venv
+build
+data
+.temp
+*.egg-info
+
+MANIFEST
+
+.pytest_cache
+
+launch_*.py
+
+*.pyc

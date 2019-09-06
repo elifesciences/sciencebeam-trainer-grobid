@@ -16,4 +16,4 @@ if [ ! -z "${OVERRIDE_MODELS}" ]; then
         --validate-pickles
 fi
 
-exec $@
+exec "$@"

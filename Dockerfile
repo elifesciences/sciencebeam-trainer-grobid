@@ -5,11 +5,10 @@ FROM openjdk:8-jre-stretch
 
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \
-    wget unzip libxml2 rename python2.7-minimal libpython2.7-stdlib \
+    wget unzip libxml2 rename python3-minimal libpython3-stdlib \
     && rm -rf /var/lib/apt/lists/*
 
 # install gcloud to make it easier to access cloud storage
-# gcloud sdk cli only works with Python 2 (in 2019)
 RUN mkdir -p /usr/local/gcloud \
     && curl -q https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz -o /tmp/google-cloud-sdk.tar.gz \
     && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \

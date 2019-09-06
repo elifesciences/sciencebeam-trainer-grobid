@@ -23,7 +23,7 @@ class TestIsExternalLocation:
 
 class TestCopyFile:
     def test_should_decompress_gzipped_file(self, temp_dir: Path):
-        with gzip.open(temp_dir.joinpath(SOURCE_FILENAME_1 + '.gz'), 'wb') as fp:
+        with gzip.open(str(temp_dir.joinpath(SOURCE_FILENAME_1 + '.gz')), 'wb') as fp:
             fp.write(DATA_1)
         copy_file(
             temp_dir.joinpath(SOURCE_FILENAME_1 + '.gz'),

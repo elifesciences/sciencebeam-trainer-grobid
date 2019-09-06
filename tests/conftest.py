@@ -4,6 +4,8 @@ from pathlib import Path
 import pytest
 from py._path.local import LocalPath
 
+from .compat_patch_mock import patch_magicmock_fixture  # noqa pylint: disable=unused-import
+
 
 LOGGER = logging.getLogger(__name__)
 

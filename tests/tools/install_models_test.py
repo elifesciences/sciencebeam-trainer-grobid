@@ -150,7 +150,7 @@ class TestMain:
             models_path: Path,
             source_path: Path):
         source_path.mkdir(parents=True, exist_ok=True)
-        with gzip.open(source_path.joinpath(MODEL_FILE_1 + '.gz'), 'wb') as out_fp:
+        with gzip.open(str(source_path.joinpath(MODEL_FILE_1 + '.gz')), 'wb') as out_fp:
             out_fp.write(MODEL_DATA_1)
         target_directory = models_path.joinpath(MODEL_NAME_1)
         main([

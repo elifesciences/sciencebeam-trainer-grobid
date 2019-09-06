@@ -26,8 +26,6 @@ SAMPLE_PDF_URL = https://cdn.elifesciences.org/articles/32671/elife-32671-v2.pdf
 # Specify the location where to copy the model to
 CLOUD_MODELS_PATH =
 
-NO_BUILD =
-
 NOT_SLOW_PYTEST_ARGS = -m 'not slow'
 
 ARGS =
@@ -79,9 +77,9 @@ dev-test: dev-lint dev-pytest
 
 
 build:
-	@if [ "$(NO_BUILD)" != "y" ]; then \
-		$(DOCKER_COMPOSE) build; \
-	fi
+	$(DOCKER_COMPOSE) build \
+		grobid-builder \
+		sciencebeam-trainer-grobid \
 
 
 build-dev:
@@ -104,7 +102,7 @@ example-data-processing-end-to-end: \
 	train-header-model-with-dataset
 
 
-get-example-data: build
+get-example-data:
 	$(RUN) bash -c '\
 		mkdir -p "$(PDF_DATA_DIR)" \
 		&& curl --fail --show-error --connect-timeout 60 --user-agent "$(USER_AGENT)" --location \
@@ -113,64 +111,64 @@ get-example-data: build
 		'
 
 
-generate-grobid-training-data: build
+generate-grobid-training-data:
 	$(RUN) generate-grobid-training-data.sh \
 		"${PDF_DATA_DIR}" \
 		"$(DATASET_DIR)"
 
 
-copy-raw-header-training-data-to-tei: build
+copy-raw-header-training-data-to-tei:
 	$(RUN) bash -c '\
 		mkdir -p "$(DATASET_DIR)/header/corpus/tei" && \
 		cp "$(DATASET_DIR)/header/corpus/tei-raw/"*.xml "$(DATASET_DIR)/header/corpus/tei/" \
 		'
 
 
-train-header-model-with-dataset: build
+train-header-model-with-dataset:
 	$(RUN) train-header-model.sh \
 		--dataset "$(DATASET_DIR)" \
 		$(TRAIN_ARGS)
 
 
-train-header-model-with-default-dataset: build
+train-header-model-with-default-dataset:
 	$(RUN) train-header-model.sh \
 		--use-default-dataset \
 		$(TRAIN_ARGS)
 
 
-train-header-model-with-dataset-and-default-dataset: build
+train-header-model-with-dataset-and-default-dataset:
 	$(RUN) train-header-model.sh \
 		--dataset "$(DATASET_DIR)" \
 		--use-default-dataset \
 		$(TRAIN_ARGS)
 
 
-upload-header-model: build
+upload-header-model:
 	$(RUN) upload-header-model.sh "$(CLOUD_MODELS_PATH)"
 
 
-copy-raw-segmentation-training-data-to-tei: build
+copy-raw-segmentation-training-data-to-tei:
 	$(RUN) bash -c '\
 		mkdir -p "$(DATASET_DIR)/segmentation/corpus/tei" && \
 		cp "$(DATASET_DIR)/segmentation/corpus/tei-raw/"*.xml "$(DATASET_DIR)/segmentation/corpus/tei/" \
 		'
 
 
-train-segmentation-model-with-dataset: build
+train-segmentation-model-with-dataset:
 	$(RUN) train-model.sh \
 		--dataset "$(DATASET_DIR)" \
 		--model segmentation \
 		$(TRAIN_ARGS)
 
 
-train-segmentation-model-with-default-dataset: build
+train-segmentation-model-with-default-dataset:
 	$(RUN) train-model.sh \
 		--use-default-dataset \
 		--model segmentation \
 		$(TRAIN_ARGS)
 
 
-train-segmentation-model-with-dataset-and-default-dataset: build
+train-segmentation-model-with-dataset-and-default-dataset:
 	$(RUN) train-model.sh \
 		--dataset "$(DATASET_DIR)" \
 		--use-default-dataset \
@@ -178,11 +176,11 @@ train-segmentation-model-with-dataset-and-default-dataset: build
 		$(TRAIN_ARGS)
 
 
-upload-segmentation-model: build
+upload-segmentation-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "segmentation"
 
 
-shell: build
+shell:
 	$(RUN) bash
 
 
@@ -233,7 +231,7 @@ ci-build:
 
 
 ci-test-only:
-	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" NO_BUILD=y \
+	make DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" \
 		test \
 		example-data-processing-end-to-end
 

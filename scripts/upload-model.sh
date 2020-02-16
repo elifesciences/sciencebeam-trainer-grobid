@@ -22,11 +22,20 @@ fi
 
 if [ ! -d "${GROBID_HOME}" ]; then
     echo "no grobid home found (have you trained a model yet?)"
+    exit 1
 fi
 
 echo "uploading ${MODEL_NAME} model to ${CLOUD_MODELS_PATH}"
 
-gsutil cp -Z "${GROBID_HOME}/models/${MODEL_NAME}/model.wapiti" \
-    "${CLOUD_MODELS_PATH}/${MODEL_NAME}/model.wapiti.gz"
+LOCAL_MODEL_FILE="${GROBID_HOME}/models/${MODEL_NAME}/model.wapiti"
+
+if [ ! -f "${LOCAL_MODEL_FILE}" ]; then
+    echo "model file not found: ${LOCAL_MODEL_FILE}"
+    exit 2
+fi
+
+cat "${LOCAL_MODEL_FILE}" \
+    | gzip \
+    | gsutil cp - "${CLOUD_MODELS_PATH}/${MODEL_NAME}/model.wapiti.gz"
 
 gsutil ls -l "${CLOUD_MODELS_PATH}/${MODEL_NAME}"

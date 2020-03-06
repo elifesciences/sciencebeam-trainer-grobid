@@ -6,7 +6,7 @@ elifeUpdatePipeline(
         sh "git add .env"
     },
     {
-        return "Updated grobid to ${grobidTag}"
+        return "Updated latest grobid to ${grobidTag}"
     },
     'update_grobid/',
     false,

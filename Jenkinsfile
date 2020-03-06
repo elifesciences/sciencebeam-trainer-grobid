@@ -7,7 +7,7 @@ elifePipeline {
             checkout scm
             commit = elifeGitRevision()
             allGrobidTags = sh(
-                script: 'bash -c "source .env && echo \\$ALL_GROBID_TAGS"',
+                script: 'bash -c "source .env && echo \\$ALL_GROBID_TAGS,\\$LATEST_GROBID_TAG"',
                 returnStdout: true
             ).trim().split(',')
             echo "allGrobidTags: ${allGrobidTags}"

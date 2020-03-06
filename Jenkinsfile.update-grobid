@@ -1,0 +1,15 @@
+def grobidTag = params.grobid_tag
+
+elifeUpdatePipeline(
+    { _commit ->
+        sh "sed -i -e 's/LATEST_GROBID_TAG=.*/LATEST_GROBID_TAG=${grobidTag}/' .env"
+        sh "git add .env"
+    },
+    {
+        return "Updated grobid to ${grobidTag}"
+    },
+    'update_grobid/',
+    false,
+    'develop',
+    true
+)

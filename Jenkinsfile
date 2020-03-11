@@ -69,7 +69,12 @@ elifePipeline {
             stage 'Trigger grobid and grobid trainer tag update', {
                 def grobidTag = allGrobidTags.last()
                 def grobidTrainerTag = "${grobidTag}-${commit}"
-                build job: 'dependencies/dependencies-sciencebeam-trainer-delft-update-grobid-and-trainer',  wait: false, parameters: [string(name: 'grobid_tag', value: grobidTag), string(name: 'grobid_trainer_tag', value: grobidTrainerTag)]
+                build   job: 'dependencies/dependencies-sciencebeam-trainer-delft-update-grobid-and-trainer',
+                        wait: false,
+                        parameters: [
+                                        string(name: 'grobid_tag', value: grobidTag),
+                                        string(name: 'grobid_trainer_tag', value: grobidTrainerTag)
+                                    ]
             }
         }
     }

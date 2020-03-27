@@ -279,6 +279,39 @@ upload-reference-segmenter-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "reference-segmenter"
 
 
+copy-raw-affiliation-address-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/affiliation-address/corpus" && \
+		cp "$(DATASET_DIR)/affiliation-address/corpus-raw/"*.xml "$(DATASET_DIR)/affiliation-address/corpus/" \
+		'
+
+
+train-affiliation-address-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+train-affiliation-address-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+train-affiliation-address-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+upload-affiliation-address-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "affiliation-address"
+
+
 copy-raw-citation-training-data-to-tei:
 	$(RUN) bash -c '\
 		mkdir -p "$(DATASET_DIR)/citation/corpus" && \

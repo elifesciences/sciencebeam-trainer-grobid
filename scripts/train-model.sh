@@ -83,10 +83,10 @@ elif [ "${MODEL_NAME}" == "reference-segmenter" ]; then
         "reference-segmenter/corpus/raw"
         "reference-segmenter/corpus/tei"
     )
+elif [ "${MODEL_NAME}" == "affiliation-address" ]; then
+    sub_dirs=("affiliation-address/corpus")
 elif [ "${MODEL_NAME}" == "citation" ]; then
-    sub_dirs=(
-        "citation/corpus"
-    )
+    sub_dirs=("citation/corpus")
 else
     echo "Unsupported model: ${MODEL_NAME}"
     exit 2

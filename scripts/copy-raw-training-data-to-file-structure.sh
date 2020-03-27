@@ -58,7 +58,105 @@ copy_header_files() {
     rename 's#\.training\.#\.#' "$header_tei_dir"/*
 }
 
+copy_fulltext_files() {
+    fulltext_raw_dir="$DATASET_DIR/fulltext/corpus/raw"
+    fulltext_tei_dir="$DATASET_DIR/fulltext/corpus/tei-raw"
+    mkdir_clean "$fulltext_raw_dir" "${fulltext_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $fulltext_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.fulltext "$fulltext_raw_dir"
+    echo "renaming files $fulltext_raw_dir"
+    rename 's#\.training\.#\.#' "$fulltext_raw_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $fulltext_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.fulltext.tei.xml "$fulltext_tei_dir"
+    rename 's#\.training\.#\.#' "$fulltext_tei_dir"/*
+}
+
+copy_figure_files() {
+    figure_raw_dir="$DATASET_DIR/figure/corpus/raw"
+    figure_tei_dir="$DATASET_DIR/figure/corpus/tei-raw"
+    mkdir_clean "$figure_raw_dir" "${figure_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $figure_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.figure "$figure_raw_dir"
+    echo "renaming files $figure_raw_dir"
+    rename 's#\.training\.#\.#' "$figure_raw_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $figure_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.figure.tei.xml "$figure_tei_dir"
+    rename 's#\.training\.#\.#' "$figure_tei_dir"/*
+}
+
+copy_reference_segmenter_files() {
+    reference_segmenter_raw_dir="$DATASET_DIR/reference-segmenter/corpus/raw"
+    reference_segmenter_tei_dir="$DATASET_DIR/reference-segmenter/corpus/tei-raw"
+    mkdir_clean "$reference_segmenter_raw_dir" "${reference_segmenter_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $reference_segmenter_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.referenceSegmenter "$reference_segmenter_raw_dir"
+    echo "renaming files $reference_segmenter_raw_dir"
+    rename 's#\.training\.#\.#' "$reference_segmenter_raw_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $reference_segmenter_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.referenceSegmenter.tei.xml "$reference_segmenter_tei_dir"
+    rename 's#\.training\.#\.#' "$reference_segmenter_tei_dir"/*
+}
+
+copy_affiliation_address_files() {
+    affiliation_address_tei_dir="$DATASET_DIR/affiliation-address/corpus-raw"
+    mkdir_clean "${affiliation_address_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $affiliation_address_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.references.tei.xml "$affiliation_address_tei_dir"
+    rename 's#\.training\.header\.#\.#' "$affiliation_address_tei_dir"/*
+}
+
+copy_citation_files() {
+    citation_tei_dir="$DATASET_DIR/citation/corpus-raw"
+    mkdir_clean "${citation_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $citation_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.references.tei.xml "$citation_tei_dir"
+    rename 's#\.training\.#\.#' "$citation_tei_dir"/*
+}
+
+copy_name_citation_files() {
+    name_citation_tei_dir="$DATASET_DIR/name/citation/corpus-raw"
+    mkdir_clean "${name_citation_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $name_citation_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.references.authors.tei.xml "$name_citation_tei_dir"
+    rename 's#\.training\.#\.#' "$name_citation_tei_dir"/*
+}
+
+copy_name_header_files() {
+    name_header_tei_dir="$DATASET_DIR/name/header/corpus-raw"
+    mkdir_clean "${name_header_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $name_header_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header.authors.tei.xml "$name_header_tei_dir"
+    rename 's#\.training\.#\.#' "$name_header_tei_dir"/*
+}
+
+copy_date_files() {
+    date_tei_dir="$DATASET_DIR/date/corpus-raw"
+    mkdir_clean "${date_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $date_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header.date.xml "$date_tei_dir"
+    rename 's#\.training\.header\.#\.#' "$date_tei_dir"/*
+}
+
 copy_segmentation_files
 copy_header_files
+copy_fulltext_files
+copy_figure_files
+copy_reference_segmenter_files
+copy_affiliation_address_files
+copy_citation_files
+copy_name_citation_files
+copy_name_header_files
+copy_date_files
 
 ls -l --recursive "${DATASET_DIR}"

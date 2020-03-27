@@ -180,6 +180,270 @@ upload-segmentation-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "segmentation"
 
 
+copy-raw-fulltext-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/fulltext/corpus/tei" && \
+		cp "$(DATASET_DIR)/fulltext/corpus/tei-raw/"*.xml "$(DATASET_DIR)/fulltext/corpus/tei/" \
+		'
+
+
+train-fulltext-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+train-fulltext-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+train-fulltext-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+upload-fulltext-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "fulltext"
+
+
+copy-raw-figure-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/figure/corpus/tei" && \
+		cp "$(DATASET_DIR)/figure/corpus/tei-raw/"*.xml "$(DATASET_DIR)/figure/corpus/tei/" \
+		'
+
+
+train-figure-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model figure \
+		$(TRAIN_ARGS)
+
+
+train-figure-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model figure \
+		$(TRAIN_ARGS)
+
+
+train-figure-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model figure \
+		$(TRAIN_ARGS)
+
+
+upload-figure-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "figure"
+
+
+copy-raw-reference-segmenter-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/reference-segmenter/corpus/tei" && \
+		cp "$(DATASET_DIR)/reference-segmenter/corpus/tei-raw/"*.xml "$(DATASET_DIR)/reference-segmenter/corpus/tei/" \
+		'
+
+
+train-reference-segmenter-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+train-reference-segmenter-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+train-reference-segmenter-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+upload-reference-segmenter-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "reference-segmenter"
+
+
+copy-raw-affiliation-address-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/affiliation-address/corpus" && \
+		cp "$(DATASET_DIR)/affiliation-address/corpus-raw/"*.xml "$(DATASET_DIR)/affiliation-address/corpus/" \
+		'
+
+
+train-affiliation-address-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+train-affiliation-address-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+train-affiliation-address-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model affiliation-address \
+		$(TRAIN_ARGS)
+
+
+upload-affiliation-address-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "affiliation-address"
+
+
+copy-raw-citation-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/citation/corpus" && \
+		cp "$(DATASET_DIR)/citation/corpus-raw/"*.xml "$(DATASET_DIR)/citation/corpus/" \
+		'
+
+
+train-citation-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+train-citation-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+train-citation-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+upload-citation-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "citation"
+
+
+copy-raw-name-citation-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/name/citation/corpus" && \
+		cp "$(DATASET_DIR)/name/citation/corpus-raw/"*.xml "$(DATASET_DIR)/name/citation/corpus/" \
+		'
+
+
+train-name-citation-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+train-name-citation-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+train-name-citation-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+upload-name-citation-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "name-citation"
+
+
+copy-raw-name-header-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/name/header/corpus" && \
+		cp "$(DATASET_DIR)/name/header/corpus-raw/"*.xml "$(DATASET_DIR)/name/header/corpus/" \
+		'
+
+
+train-name-header-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+train-name-header-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+train-name-header-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+upload-name-header-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "name-header"
+
+
+copy-raw-date-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/date/corpus" && \
+		cp "$(DATASET_DIR)/date/corpus-raw/"*.xml "$(DATASET_DIR)/date/corpus/" \
+		'
+
+
+train-date-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+train-date-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+train-date-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+upload-date-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "date"
+
+
 shell:
 	$(RUN) bash
 

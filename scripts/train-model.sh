@@ -58,6 +58,8 @@ fi
 
 echo "DATASETS=${DATASETS[@]}"
 
+model_dir="${MODEL_NAME}"
+
 if [ "${MODEL_NAME}" == "segmentation" ]; then
     sub_dirs=(
         "segmentation/corpus/raw"
@@ -68,14 +70,41 @@ elif [ "${MODEL_NAME}" == "header" ]; then
         "header/corpus/headers"
         "header/corpus/tei"
     )
+elif [ "${MODEL_NAME}" == "fulltext" ]; then
+    sub_dirs=(
+        "fulltext/corpus/raw"
+        "fulltext/corpus/tei"
+    )
+elif [ "${MODEL_NAME}" == "figure" ]; then
+    sub_dirs=(
+        "figure/corpus/raw"
+        "figure/corpus/tei"
+    )
+elif [ "${MODEL_NAME}" == "reference-segmenter" ]; then
+    sub_dirs=(
+        "reference-segmenter/corpus/raw"
+        "reference-segmenter/corpus/tei"
+    )
+elif [ "${MODEL_NAME}" == "affiliation-address" ]; then
+    sub_dirs=("affiliation-address/corpus")
+elif [ "${MODEL_NAME}" == "citation" ]; then
+    sub_dirs=("citation/corpus")
+elif [ "${MODEL_NAME}" == "name-citation" ]; then
+    sub_dirs=("name/citation/corpus")
+    model_dir="name/citation"
+elif [ "${MODEL_NAME}" == "name-header" ]; then
+    sub_dirs=("name/header/corpus")
+    model_dir="name/header"
+elif [ "${MODEL_NAME}" == "date" ]; then
+    sub_dirs=("date/corpus")
 else
     echo "Unsupported model: ${MODEL_NAME}"
     exit 2
 fi
 
-rm -rf "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
-mkdir -p "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
-cp -ar "${SOURCE_DATASET_DIR}/${MODEL_NAME}/crfpp-templates" "$TRAIN_DATASET_DIR/${MODEL_NAME}/crfpp-templates"
+rm -rf "${TRAIN_DATASET_DIR}/${model_dir}"
+mkdir -p "${TRAIN_DATASET_DIR}/${model_dir}"
+cp -ar "${SOURCE_DATASET_DIR}/${model_dir}/crfpp-templates" "$TRAIN_DATASET_DIR/${model_dir}/crfpp-templates"
 
 for dataset in ${DATASETS[@]}; do
     echo "dataset=$dataset"
@@ -87,7 +116,7 @@ for dataset in ${DATASETS[@]}; do
     done
 done
 
-ls -l --recursive "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
+ls -l --recursive "${TRAIN_DATASET_DIR}/${model_dir}"
 
 if [ ! -d "/opt/grobid/grobid-home" ]; then
     echo "directory /opt/grobid/grobid-home not found, copying from source..."

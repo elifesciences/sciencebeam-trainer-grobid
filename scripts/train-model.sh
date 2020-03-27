@@ -68,6 +68,11 @@ elif [ "${MODEL_NAME}" == "header" ]; then
         "header/corpus/headers"
         "header/corpus/tei"
     )
+elif [ "${MODEL_NAME}" == "reference-segmenter" ]; then
+    sub_dirs=(
+        "reference-segmenter/corpus/raw"
+        "reference-segmenter/corpus/tei"
+    )
 else
     echo "Unsupported model: ${MODEL_NAME}"
     exit 2

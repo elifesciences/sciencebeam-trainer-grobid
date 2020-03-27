@@ -180,6 +180,39 @@ upload-segmentation-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "segmentation"
 
 
+copy-raw-reference-segmenter-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/reference-segmenter/corpus/tei" && \
+		cp "$(DATASET_DIR)/reference-segmenter/corpus/tei-raw/"*.xml "$(DATASET_DIR)/reference-segmenter/corpus/tei/" \
+		'
+
+
+train-reference-segmenter-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+train-reference-segmenter-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+train-reference-segmenter-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model reference-segmenter \
+		$(TRAIN_ARGS)
+
+
+upload-reference-segmenter-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "reference-segmenter"
+
+
 shell:
 	$(RUN) bash
 

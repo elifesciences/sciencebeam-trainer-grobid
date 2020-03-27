@@ -180,6 +180,39 @@ upload-segmentation-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "segmentation"
 
 
+copy-raw-fulltext-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/fulltext/corpus/tei" && \
+		cp "$(DATASET_DIR)/fulltext/corpus/tei-raw/"*.xml "$(DATASET_DIR)/fulltext/corpus/tei/" \
+		'
+
+
+train-fulltext-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+train-fulltext-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+train-fulltext-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model fulltext \
+		$(TRAIN_ARGS)
+
+
+upload-fulltext-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "fulltext"
+
+
 copy-raw-figure-training-data-to-tei:
 	$(RUN) bash -c '\
 		mkdir -p "$(DATASET_DIR)/figure/corpus/tei" && \

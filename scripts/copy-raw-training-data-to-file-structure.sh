@@ -58,6 +58,21 @@ copy_header_files() {
     rename 's#\.training\.#\.#' "$header_tei_dir"/*
 }
 
+copy_fulltext_files() {
+    fulltext_raw_dir="$DATASET_DIR/fulltext/corpus/raw"
+    fulltext_tei_dir="$DATASET_DIR/fulltext/corpus/tei-raw"
+    mkdir_clean "$fulltext_raw_dir" "${fulltext_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $fulltext_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.fulltext "$fulltext_raw_dir"
+    echo "renaming files $fulltext_raw_dir"
+    rename 's#\.training\.#\.#' "$fulltext_raw_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $fulltext_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.fulltext.tei.xml "$fulltext_tei_dir"
+    rename 's#\.training\.#\.#' "$fulltext_tei_dir"/*
+}
+
 copy_figure_files() {
     figure_raw_dir="$DATASET_DIR/figure/corpus/raw"
     figure_tei_dir="$DATASET_DIR/figure/corpus/tei-raw"
@@ -90,6 +105,7 @@ copy_reference_segmenter_files() {
 
 copy_segmentation_files
 copy_header_files
+copy_fulltext_files
 copy_figure_files
 copy_reference_segmenter_files
 

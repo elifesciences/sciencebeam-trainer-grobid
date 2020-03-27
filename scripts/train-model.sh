@@ -58,6 +58,8 @@ fi
 
 echo "DATASETS=${DATASETS[@]}"
 
+model_dir="${MODEL_NAME}"
+
 if [ "${MODEL_NAME}" == "segmentation" ]; then
     sub_dirs=(
         "segmentation/corpus/raw"
@@ -87,14 +89,20 @@ elif [ "${MODEL_NAME}" == "affiliation-address" ]; then
     sub_dirs=("affiliation-address/corpus")
 elif [ "${MODEL_NAME}" == "citation" ]; then
     sub_dirs=("citation/corpus")
+elif [ "${MODEL_NAME}" == "name-citation" ]; then
+    sub_dirs=("name/citation/corpus")
+    model_dir="name/citation"
+elif [ "${MODEL_NAME}" == "name-header" ]; then
+    sub_dirs=("name/header/corpus")
+    model_dir="name/header"
 else
     echo "Unsupported model: ${MODEL_NAME}"
     exit 2
 fi
 
-rm -rf "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
-mkdir -p "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
-cp -ar "${SOURCE_DATASET_DIR}/${MODEL_NAME}/crfpp-templates" "$TRAIN_DATASET_DIR/${MODEL_NAME}/crfpp-templates"
+rm -rf "${TRAIN_DATASET_DIR}/${model_dir}"
+mkdir -p "${TRAIN_DATASET_DIR}/${model_dir}"
+cp -ar "${SOURCE_DATASET_DIR}/${model_dir}/crfpp-templates" "$TRAIN_DATASET_DIR/${model_dir}/crfpp-templates"
 
 for dataset in ${DATASETS[@]}; do
     echo "dataset=$dataset"
@@ -106,7 +114,7 @@ for dataset in ${DATASETS[@]}; do
     done
 done
 
-ls -l --recursive "${TRAIN_DATASET_DIR}/${MODEL_NAME}"
+ls -l --recursive "${TRAIN_DATASET_DIR}/${model_dir}"
 
 if [ ! -d "/opt/grobid/grobid-home" ]; then
     echo "directory /opt/grobid/grobid-home not found, copying from source..."

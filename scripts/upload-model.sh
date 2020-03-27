@@ -25,9 +25,17 @@ if [ ! -d "${GROBID_HOME}" ]; then
     exit 1
 fi
 
-echo "uploading ${MODEL_NAME} model to ${CLOUD_MODELS_PATH}"
+model_dir="${MODEL_NAME}"
+if [ "${MODEL_NAME}" == "name-citation" ]; then
+    model_dir="name/citation"
+elif [ "${MODEL_NAME}" == "name-header" ]; then
+    model_dir="name/header"
+fi
 
-LOCAL_MODEL_FILE="${GROBID_HOME}/models/${MODEL_NAME}/model.wapiti"
+
+echo "uploading ${model_dir} model to ${CLOUD_MODELS_PATH}"
+
+LOCAL_MODEL_FILE="${GROBID_HOME}/models/${model_dir}/model.wapiti"
 
 if [ ! -f "${LOCAL_MODEL_FILE}" ]; then
     echo "model file not found: ${LOCAL_MODEL_FILE}"
@@ -36,6 +44,6 @@ fi
 
 cat "${LOCAL_MODEL_FILE}" \
     | gzip \
-    | gsutil cp - "${CLOUD_MODELS_PATH}/${MODEL_NAME}/model.wapiti.gz"
+    | gsutil cp - "${CLOUD_MODELS_PATH}/${model_dir}/model.wapiti.gz"
 
-gsutil ls -l "${CLOUD_MODELS_PATH}/${MODEL_NAME}"
+gsutil ls -l "${CLOUD_MODELS_PATH}/${model_dir}"

@@ -345,6 +345,72 @@ upload-citation-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "citation"
 
 
+copy-raw-name-citation-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/name/citation/corpus" && \
+		cp "$(DATASET_DIR)/name/citation/corpus-raw/"*.xml "$(DATASET_DIR)/name/citation/corpus/" \
+		'
+
+
+train-name-citation-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+train-name-citation-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+train-name-citation-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model name-citation \
+		$(TRAIN_ARGS)
+
+
+upload-name-citation-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "name-citation"
+
+
+copy-raw-name-header-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/name/header/corpus" && \
+		cp "$(DATASET_DIR)/name/header/corpus-raw/"*.xml "$(DATASET_DIR)/name/header/corpus/" \
+		'
+
+
+train-name-header-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+train-name-header-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+train-name-header-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model name-header \
+		$(TRAIN_ARGS)
+
+
+upload-name-header-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "name-header"
+
+
 shell:
 	$(RUN) bash
 

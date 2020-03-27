@@ -121,6 +121,24 @@ copy_citation_files() {
     rename 's#\.training\.#\.#' "$citation_tei_dir"/*
 }
 
+copy_name_citation_files() {
+    name_citation_tei_dir="$DATASET_DIR/name/citation/corpus-raw"
+    mkdir_clean "${name_citation_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $name_citation_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.references.authors.tei.xml "$name_citation_tei_dir"
+    rename 's#\.training\.#\.#' "$name_citation_tei_dir"/*
+}
+
+copy_name_header_files() {
+    name_header_tei_dir="$DATASET_DIR/name/header/corpus-raw"
+    mkdir_clean "${name_header_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $name_header_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header.authors.tei.xml "$name_header_tei_dir"
+    rename 's#\.training\.#\.#' "$name_header_tei_dir"/*
+}
+
 copy_segmentation_files
 copy_header_files
 copy_fulltext_files
@@ -128,5 +146,7 @@ copy_figure_files
 copy_reference_segmenter_files
 copy_affiliation_address_files
 copy_citation_files
+copy_name_citation_files
+copy_name_header_files
 
 ls -l --recursive "${DATASET_DIR}"

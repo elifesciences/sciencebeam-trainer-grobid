@@ -279,6 +279,39 @@ upload-reference-segmenter-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "reference-segmenter"
 
 
+copy-raw-citation-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/citation/corpus" && \
+		cp "$(DATASET_DIR)/citation/corpus-raw/"*.xml "$(DATASET_DIR)/citation/corpus/" \
+		'
+
+
+train-citation-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+train-citation-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+train-citation-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model citation \
+		$(TRAIN_ARGS)
+
+
+upload-citation-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "citation"
+
+
 shell:
 	$(RUN) bash
 

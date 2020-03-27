@@ -103,10 +103,20 @@ copy_reference_segmenter_files() {
     rename 's#\.training\.#\.#' "$reference_segmenter_tei_dir"/*
 }
 
+copy_citation_files() {
+    citation_tei_dir="$DATASET_DIR/citation/corpus-raw"
+    mkdir_clean "${citation_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $citation_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.references.tei.xml "$citation_tei_dir"
+    rename 's#\.training\.#\.#' "$citation_tei_dir"/*
+}
+
 copy_segmentation_files
 copy_header_files
 copy_fulltext_files
 copy_figure_files
 copy_reference_segmenter_files
+copy_citation_files
 
 ls -l --recursive "${DATASET_DIR}"

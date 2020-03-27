@@ -139,6 +139,15 @@ copy_name_header_files() {
     rename 's#\.training\.#\.#' "$name_header_tei_dir"/*
 }
 
+copy_date_files() {
+    date_tei_dir="$DATASET_DIR/date/corpus-raw"
+    mkdir_clean "${date_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $date_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.header.date.xml "$date_tei_dir"
+    rename 's#\.training\.header\.#\.#' "$date_tei_dir"/*
+}
+
 copy_segmentation_files
 copy_header_files
 copy_fulltext_files
@@ -148,5 +157,6 @@ copy_affiliation_address_files
 copy_citation_files
 copy_name_citation_files
 copy_name_header_files
+copy_date_files
 
 ls -l --recursive "${DATASET_DIR}"

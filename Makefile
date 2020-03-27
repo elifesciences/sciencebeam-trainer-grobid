@@ -411,6 +411,39 @@ upload-name-header-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "name-header"
 
 
+copy-raw-date-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/date/corpus" && \
+		cp "$(DATASET_DIR)/date/corpus-raw/"*.xml "$(DATASET_DIR)/date/corpus/" \
+		'
+
+
+train-date-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+train-date-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+train-date-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model date \
+		$(TRAIN_ARGS)
+
+
+upload-date-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "date"
+
+
 shell:
 	$(RUN) bash
 

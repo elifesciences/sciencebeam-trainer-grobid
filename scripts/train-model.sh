@@ -95,6 +95,8 @@ elif [ "${MODEL_NAME}" == "name-citation" ]; then
 elif [ "${MODEL_NAME}" == "name-header" ]; then
     sub_dirs=("name/header/corpus")
     model_dir="name/header"
+elif [ "${MODEL_NAME}" == "date" ]; then
+    sub_dirs=("date/corpus")
 else
     echo "Unsupported model: ${MODEL_NAME}"
     exit 2

@@ -58,6 +58,21 @@ copy_header_files() {
     rename 's#\.training\.#\.#' "$header_tei_dir"/*
 }
 
+copy_figure_files() {
+    figure_raw_dir="$DATASET_DIR/figure/corpus/raw"
+    figure_tei_dir="$DATASET_DIR/figure/corpus/tei-raw"
+    mkdir_clean "$figure_raw_dir" "${figure_tei_dir}"
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $figure_raw_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.figure "$figure_raw_dir"
+    echo "renaming files $figure_raw_dir"
+    rename 's#\.training\.#\.#' "$figure_raw_dir"/*
+
+    echo "copying files from $RAW_TRAINING_DATA_DIR to $figure_tei_dir"
+    cp -a "$RAW_TRAINING_DATA_DIR/"*.figure.tei.xml "$figure_tei_dir"
+    rename 's#\.training\.#\.#' "$figure_tei_dir"/*
+}
+
 copy_reference_segmenter_files() {
     reference_segmenter_raw_dir="$DATASET_DIR/reference-segmenter/corpus/raw"
     reference_segmenter_tei_dir="$DATASET_DIR/reference-segmenter/corpus/tei-raw"
@@ -75,6 +90,7 @@ copy_reference_segmenter_files() {
 
 copy_segmentation_files
 copy_header_files
+copy_figure_files
 copy_reference_segmenter_files
 
 ls -l --recursive "${DATASET_DIR}"

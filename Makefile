@@ -26,6 +26,9 @@ SAMPLE_PDF_URL = https://cdn.elifesciences.org/articles/32671/elife-32671-v2.pdf
 # Specify the location where to copy the model to
 CLOUD_MODELS_PATH =
 
+# Specify the location where to copy the dataset to
+CLOUD_DATATSET_PATH =
+
 NOT_SLOW_PYTEST_ARGS = -m 'not slow'
 
 ARGS =
@@ -115,6 +118,12 @@ generate-grobid-training-data:
 	$(RUN) generate-grobid-training-data.sh \
 		"${PDF_DATA_DIR}" \
 		"$(DATASET_DIR)"
+
+
+upload-dataset:
+	$(RUN) upload-dataset.sh \
+		"${DATASET_DIR}" \
+		"$(CLOUD_DATATSET_PATH)"
 
 
 copy-raw-header-training-data-to-tei:

@@ -44,13 +44,16 @@ def copy_directory_with_source_meta(source_url: str, target_directory: str, forc
         raise FileNotFoundError('no files found in %s' % source_url)
     os.makedirs(target_directory, exist_ok=True)
     for filename in files:
+        if filename.endswith('/'):
+            # sometimes the file list contain the directory itself
+            continue
         relative_filename = os.path.basename(filename)
         relative_output_filename = get_compression_wrapper(
             relative_filename
         ).strip_compression_filename_ext(relative_filename)
         source_filepath = os.path.join(source_url, relative_filename)
         target_filepath = os.path.join(target_directory, relative_output_filename)
-        LOGGER.debug('copying %s to %s', source_filepath, target_filepath)
+        LOGGER.info('copying %s to %s', source_filepath, target_filepath)
         copy_file(source_filepath, target_filepath)
     LOGGER.debug('setting %s to %s', source_url_meta_file, source_url)
     source_url_meta_file.write_text(source_url)

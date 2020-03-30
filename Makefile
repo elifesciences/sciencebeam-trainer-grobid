@@ -258,6 +258,39 @@ upload-figure-model:
 	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "figure"
 
 
+copy-raw-table-training-data-to-tei:
+	$(RUN) bash -c '\
+		mkdir -p "$(DATASET_DIR)/table/corpus/tei" && \
+		cp "$(DATASET_DIR)/table/corpus/tei-raw/"*.xml "$(DATASET_DIR)/table/corpus/tei/" \
+		'
+
+
+train-table-model-with-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--model table \
+		$(TRAIN_ARGS)
+
+
+train-table-model-with-default-dataset:
+	$(RUN) train-model.sh \
+		--use-default-dataset \
+		--model table \
+		$(TRAIN_ARGS)
+
+
+train-table-model-with-dataset-and-default-dataset:
+	$(RUN) train-model.sh \
+		--dataset "$(DATASET_DIR)" \
+		--use-default-dataset \
+		--model table \
+		$(TRAIN_ARGS)
+
+
+upload-table-model:
+	$(RUN) upload-model.sh "$(CLOUD_MODELS_PATH)" "table"
+
+
 copy-raw-reference-segmenter-training-data-to-tei:
 	$(RUN) bash -c '\
 		mkdir -p "$(DATASET_DIR)/reference-segmenter/corpus/tei" && \

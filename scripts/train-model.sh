@@ -80,6 +80,11 @@ elif [ "${MODEL_NAME}" == "figure" ]; then
         "figure/corpus/raw"
         "figure/corpus/tei"
     )
+elif [ "${MODEL_NAME}" == "table" ]; then
+    sub_dirs=(
+        "table/corpus/raw"
+        "table/corpus/tei"
+    )
 elif [ "${MODEL_NAME}" == "reference-segmenter" ]; then
     sub_dirs=(
         "reference-segmenter/corpus/raw"

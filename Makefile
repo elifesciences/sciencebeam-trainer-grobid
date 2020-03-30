@@ -22,6 +22,7 @@ TRAIN_ARGS =
 
 USER_AGENT = Dummy/user-agent
 SAMPLE_PDF_URL = https://cdn.elifesciences.org/articles/32671/elife-32671-v2.pdf
+SAMPLE_PDF_URL_2 = https://www.biorxiv.org/content/10.1101/452433v1.full.pdf
 
 # Specify the location where to copy the model to
 CLOUD_MODELS_PATH =
@@ -110,6 +111,8 @@ get-example-data:
 		mkdir -p "$(PDF_DATA_DIR)" \
 		&& curl --fail --show-error --connect-timeout 60 --user-agent "$(USER_AGENT)" --location \
 			"$(SAMPLE_PDF_URL)" --silent -o "$(PDF_DATA_DIR)/sample.pdf" \
+		&& curl --fail --show-error --connect-timeout 60 --user-agent "$(USER_AGENT)" --location \
+			"$(SAMPLE_PDF_URL_2)" --silent -o "$(PDF_DATA_DIR)/sample_2.pdf" \
 		&& ls -l "$(PDF_DATA_DIR)" \
 		'
 

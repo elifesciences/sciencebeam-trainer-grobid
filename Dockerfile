@@ -5,7 +5,8 @@ FROM openjdk:8-jre-stretch
 
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \
-    wget unzip libxml2 rename python3-minimal python3-venv libpython3-stdlib \
+    wget unzip libxml2 rename gcc g++ \
+    python3-minimal python3-venv libpython3-stdlib python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # install gcloud to make it easier to access cloud storage

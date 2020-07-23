@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-stretch AS builder
+FROM openjdk:8u212-jdk-stretch AS builder
 
 ARG grobid_tag
 RUN wget --output-document=/tmp/grobid.zip --quiet --show-progress --progress=bar:force:noscroll \

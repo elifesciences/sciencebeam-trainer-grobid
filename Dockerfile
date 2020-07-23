@@ -1,7 +1,7 @@
 ARG builder_image
 FROM ${builder_image} AS builder
 
-FROM openjdk:8-jre-stretch
+FROM openjdk:8u212-jre-slim
 
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \

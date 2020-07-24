@@ -1,4 +1,11 @@
-version: '3'
+version: '3.4'
+
+x-grobid-env:
+    &grobid-env
+      - OVERRIDE_MODELS=${OVERRIDE_MODELS}
+      - OVERRIDE_MODEL_1=${OVERRIDE_MODEL_1}
+      - OVERRIDE_MODEL_2=${OVERRIDE_MODEL_2}
+      - OVERRIDE_MODEL_3=${OVERRIDE_MODEL_3}
 
 services:
   grobid-builder:
@@ -21,6 +28,7 @@ services:
     image: elifesciences/sciencebeam-trainer-grobid:${IMAGE_TAG}
     depends_on:
       - grobid-builder
+    environment: *grobid-env
     volumes:
       - data:/data
 
@@ -48,6 +56,7 @@ services:
     image: elifesciences/sciencebeam-trainer-grobid-dev:${IMAGE_TAG}
     depends_on:
       - sciencebeam-trainer-grobid-dev-base
+    environment: *grobid-env
     volumes:
       - data:/data
 

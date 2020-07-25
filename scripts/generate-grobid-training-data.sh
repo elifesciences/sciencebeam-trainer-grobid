@@ -24,5 +24,15 @@ RAW_TRAINING_DATA_DIR=/tmp/raw-training-data
 
 rm -rf "${RAW_TRAINING_DATA_DIR}"
 
-generate-raw-grobid-training-data.sh "${PDF_DIR}" "${RAW_TRAINING_DATA_DIR}"
+if generate-raw-grobid-training-data.sh "${PDF_DIR}" "${RAW_TRAINING_DATA_DIR}"; then
+    echo "generated raw grobid training data: ${RAW_TRAINING_DATA_DIR}"
+else
+    echo "failed to generate raw grobid training data, error: $?"
+fi
+
+if [ ! "$(ls --almost-all ${RAW_TRAINING_DATA_DIR})" ]; then
+    echo "no raw grobid training data generated: ${RAW_TRAINING_DATA_DIR}"
+    exit 1
+fi
+
 copy-raw-training-data-to-file-structure.sh "${RAW_TRAINING_DATA_DIR}" "${DATASET_DIR}"

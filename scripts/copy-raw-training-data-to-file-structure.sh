@@ -75,11 +75,21 @@ copy_segmentation_files() {
 }
 
 copy_header_files() {
-    copy_and_rename_tei_and_raw_training_files \
-        "$DATASET_DIR/header/corpus/tei-raw" \
-        "*.header.tei.xml" \
-        "$DATASET_DIR/header/corpus/headers" \
-        "*.header"
+    if [ -d "/opt/grobid-source/grobid-trainer/resources/dataset/header/corpus/headers" ]; then
+        # prior GROBID 0.6.1
+        copy_and_rename_tei_and_raw_training_files \
+            "$DATASET_DIR/header/corpus/tei-raw" \
+            "*.header.tei.xml" \
+            "$DATASET_DIR/header/corpus/headers" \
+            "*.header"
+    else
+        # from GROBID 0.6.1
+        copy_and_rename_tei_and_raw_training_files \
+            "$DATASET_DIR/header/corpus/tei-raw" \
+            "*.header.tei.xml" \
+            "$DATASET_DIR/header/corpus/raw" \
+            "*.header"
+    fi
 }
 
 copy_fulltext_files() {

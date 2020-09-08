@@ -66,10 +66,19 @@ if [ "${MODEL_NAME}" == "segmentation" ]; then
         "segmentation/corpus/tei"
     )
 elif [ "${MODEL_NAME}" == "header" ]; then
-    sub_dirs=(
-        "header/corpus/headers"
-        "header/corpus/tei"
-    )
+    if [ -d "/opt/grobid-source/grobid-trainer/resources/dataset/header/corpus/headers" ]; then
+        # prior GROBID 0.6.1
+        sub_dirs=(
+            "header/corpus/headers"
+            "header/corpus/tei"
+        )
+    else
+        # from GROBID 0.6.1
+        sub_dirs=(
+            "header/corpus/raw"
+            "header/corpus/tei"
+        )
+    fi
 elif [ "${MODEL_NAME}" == "fulltext" ]; then
     sub_dirs=(
         "fulltext/corpus/raw"

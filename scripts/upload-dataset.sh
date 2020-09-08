@@ -41,6 +41,7 @@ sub_dirs=(
     "segmentation/corpus/tei"
     "segmentation/corpus/tei-raw"
     "segmentation/corpus/tei-auto"
+    "header/corpus/raw"
     "header/corpus/headers"
     "header/corpus/tei"
     "header/corpus/tei-raw"
